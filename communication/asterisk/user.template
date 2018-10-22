@@ -1,0 +1,12 @@
+[user-@NUM@]                                                                                                                                                                                                                                   
+type=friend
+host=dynamic
+secret=pass
+username=user@NUM@
+deaultuser=user@NUM@
+callerid="User @NUM@" <@NUM@>
+fromuser=user@NUM@
+nat=no
+context=openfest
+qualify=yes
+

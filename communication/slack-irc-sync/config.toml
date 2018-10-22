@@ -1,0 +1,90 @@
+[irc]
+	[irc.ludost]
+		Server="irc.ludost.net:6697"
+		UseTLS=true
+		UseSASL=false
+		SkipTLSVerify=false
+		Nick="Synchrotron"
+		MessageDelay=200
+		MessageQueue=1000
+		MessageLength=500
+		IgnoreNicks="Slacksync Slacksync-OF"
+		IgnoreMessages="^~~ badword"
+		RemoteNickFormat="[{PROTOCOL}] <{NICK}> "
+		ShowJoinPart=false
+
+[slack]
+	[slack.openfest]
+		# change with real token
+		Token="xoxp-some-letters-and-numbers"
+		IconURL="https://robohash.org/{NICK}.png?size=48x48"
+		NickFormatter="plain"
+		NicksPerRow=4
+		EditDisable=false
+		EditSuffix=" (edited)"
+		PrefixMessagesWithNick=false
+		IgnoreNicks="Slacksync Slacksync-OF"
+		IgnoreMessages="^~~ badword"
+		RemoteNickFormat="[{PROTOCOL}] <{NICK}> "
+		ShowJoinPart=false
+
+[api]
+	[api.local]
+		BindAddress="0.0.0.0:4242"
+		Buffer=1000
+		Token="a-real-not-disclosed-token"
+
+[general]
+	RemoteNickFormat="[{PROTOCOL}] <{NICK}> "
+
+[[gateway]]
+	name="si-of-general"
+	enable=true
+
+	[[gateway.inout]]
+		account="irc.ludost"
+		channel="#openfest"
+
+	[[gateway.inout]]
+		account="slack.openfest"
+		channel="general"
+
+[[gateway]]
+	name="si-of-noc"
+	enable=true
+
+	[[gateway.inout]]
+		account="irc.ludost"
+		channel="#of-noc"
+
+	[[gateway.inout]]
+		account="slack.openfest"
+		channel="noc"
+
+[[gateway]]
+	name="si-of-video"
+	enable=true
+
+	[[gateway.inout]]
+		account="irc.ludost"
+		channel="#video"
+
+	[[gateway.inout]]
+		account="slack.openfest"
+		channel="video"
+
+[[gateway]]
+	name="api-fan"
+	enable=true
+
+	[[gateway.in]]
+		account="api.local"
+		channel="api"
+	
+	[[gateway.out]]
+		account="slack.openfest"
+		channel="general"
+	
+	[[gateway.out]]
+		account="irc.ludost"
+		channel="#openfest"

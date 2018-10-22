@@ -1,0 +1,12 @@
+[Unit]
+Description=matterbridge sync service (%i)
+After=network.target
+
+[Service]
+User=nobody
+Group=nogroup
+PrivateTmp=yes
+ExecStart=/opt/go-home/bin/matterbridge -conf /etc/matterbridge/%i.toml
+
+[Install]
+WantedBy=multi-user.target
