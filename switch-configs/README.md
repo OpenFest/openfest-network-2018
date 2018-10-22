@@ -18,10 +18,10 @@ There are 4 exceptions from the scheme:
    * Uplink is last 2 copper ports (47, 48)
    * Ports 41 to 46 are reserved for internal services
    * Downlinks to switches are on ports 1-6
-   * Presenters wired access is on port 7-9
+   * Presenters wired access is on port 7-8 (and trough vocsw-C)
    * WIFI access is as follows:
-     * Ports 11 and 12 are trunked and go to PoE switch.
-     * Ports 12-18 are for dedicated WIFI AP's
+     * Ports 9 and 10 are trunked and go to PoE switch.
+     * Ports 11-18 are for dedicated WIFI AP's
  * nocsw - needs easy access to all vlans on ports so all vlans are present there
    * Multiple ports per vlan are present
    * Port 1,2 - Phone access
