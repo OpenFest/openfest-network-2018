@@ -1,0 +1,20 @@
+[Unit]
+Description=carbon-cache instance %i (graphite)
+After=network.target
+
+[Service]
+User=graphite
+Group=graphite
+PrivateTmp=yes
+# Run ExecStartPre with root-permissions
+PermissionsStartOnly=true
+ExecStartPre=-/bin/mkdir -p /run/graphite
+ExecStartPre=/bin/chown -R graphite:graphite /run/graphite
+ExecStartPre=/bin/rm -f /run/graphite/carbon-cache-%i.pid
+ExecStart=/opt/graphite/bin/carbon-cache.py --instance=%i start
+Type=forking
+PIDFile=/run/graphite/carbon-cache-%i.pid
+LimitNOFILE=128000
+
+[Install]
+WantedBy=multi-user.target

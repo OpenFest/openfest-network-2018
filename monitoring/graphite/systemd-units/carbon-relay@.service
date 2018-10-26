@@ -1,0 +1,19 @@
+[Unit]
+Description=carbon-relay instance %i (graphite)
+After=network.target
+
+[Service]
+User=graphite
+Group=graphite
+PrivateTmp=yes
+# Run ExecStartPre with root-permissions
+PermissionsStartOnly=true
+ExecStartPre=-/bin/mkdir -p /run/graphite
+ExecStartPre=/bin/chown -R graphite:graphite /run/graphite
+ExecStartPre=/bin/rm -f /run/graphite/carbon-relay-%i.pid
+ExecStart=/opt/graphite/bin/carbon-relay.py --instance=%i start
+Type=forking
+PIDFile=/run/graphite/carbon-relay-%i.pid
+
+[Install]
+WantedBy=multi-user.target

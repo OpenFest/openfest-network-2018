@@ -1,0 +1,4 @@
+stations		value:GAUGE:0:256
+signal_noise_mw         value:GAUGE:0:U
+signal_power_mw         value:GAUGE:0:U
+
