@@ -1,0 +1,56 @@
+#!/bin/sh -e
+#
+# rc.local
+#
+# This script is executed at the end of each multiuser runlevel.
+# Make sure that the script will "exit 0" on success or any other
+# value on error.
+#
+# In order to enable or disable this script just change the execution
+# bits.
+#
+# By default this script does nothing.
+iptables -t nat -A POSTROUTING -s 10.0.0.0/8 -o tun+ -j SNAT --to 185.117.82.237
+iptables -t nat -A POSTROUTING -s 10.0.0.0/8 -o eth1.999 -j SNAT --to 185.117.82.237
+#iptables -t nat -A POSTROUTING -s 10.0.0.0/8 -o eth1.6 -j MASQUERADE # REMOVE WHEN TESTING IN INITLAB DONE
+iptables -t nat -A POSTROUTING -s 192.168.1.0/24 -o eth1.10 -j MASQUERADE
+#iptables -t nat -A POSTROUTING -s 192.168.1.0/24 -o eth1.6 -j MASQUERADE # REMOVE WHEN TESTING IN INITLAB DONE
+
+
+# BCP38 filter
+iptables -A FORWARD ! -s 10.20.0.0/22 -i eth1.20 -j DROP
+iptables -A FORWARD ! -s 10.21.0.0/22 -i eth1.21 -j DROP
+iptables -A FORWARD ! -s 10.22.0.0/22 -i eth1.22 -j DROP
+iptables -A FORWARD ! -s 10.23.0.0/22 -i eth1.23 -j DROP
+iptables -A FORWARD ! -s 10.24.0.0/22 -i eth1.24 -j DROP
+
+# zone firewall
+for i in 20 23 24; do
+	iptables -A FORWARD -d 10.${i}.0.0/24 -i tun+ -j ACCEPT
+	iptables -A FORWARD -d 10.${i}.0.0/24 -i eth1.999 -j ACCEPT
+	iptables -A FORWARD -d 10.${i}.0.0/24 -j DROP
+done
+
+iptables -A FORWARD -d 10.24.0.0/24 ! -i eth1.10 -j DROP
+#iptables -A FORWARD -d 10.20.0.0/24 ! -i eth1.6 -j DROP # REMOVE WHEN TESTING IN INITLAB DONE
+#iptables -A FORWARD -d 10.23.0.0/24 ! -i eth1.6 -j DROP # REMOVE WHEN TESTING IN INITLAB DONE
+#iptables -A FORWARD -d 10.24.0.0/24 ! -i eth1.6 -j DROP # REMOVE WHEN TESTING IN INITLAB DONE
+
+iptables -A FORWARD -p tcp --dport 25 -j DROP
+
+
+ip rule add from 94.26.100.155 iif lo table tbc
+ip rule add from 194.141.112.139 iif lo table tpark
+
+echo 1 > /proc/sys/net/ipv4/conf/eth1.21/proxy_arp_pvlan
+echo 1 > /proc/sys/net/ipv4/conf/eth1.22/proxy_arp_pvlan
+
+echo 0 > /proc/sys/net/ipv4/conf/eth1.21/send_redirects
+echo 0 > /proc/sys/net/ipv4/conf/eth1.22/send_redirects
+
+echo 8388608 > /proc/sys/net/core/wmem_max
+echo 8388608 > /proc/sys/net/core/wmem_default
+echo 8388608 > /proc/sys/net/core/rmem_max
+echo 8388608 > /proc/sys/net/core/rmem_default
+
+exit 0
