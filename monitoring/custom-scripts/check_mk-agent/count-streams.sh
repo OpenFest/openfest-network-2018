@@ -35,5 +35,5 @@ for STREAMER in ${STREAMERS} ; do
             _res=2
     fi
 
-    echo Streamcount_${STREAMER} ${_res} ${_data}
+    echo "Streamcount_${STREAMER} ${_res} ${_data}"
 done
